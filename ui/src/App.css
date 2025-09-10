@@ -1,0 +1,10 @@
+.layout {
+  display: flex;
+}
+
+.main-content {
+  margin-left: 220px;
+  padding: 24px;
+  width: calc(100% - 220px);
+  
+}
