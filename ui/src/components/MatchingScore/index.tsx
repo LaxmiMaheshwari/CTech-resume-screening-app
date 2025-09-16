@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
-import './MatchingScore.css';
+import './index.css';
 
-function MatchingScore({ score, breakdown }) {
+// Define the shape of each item in the breakdown array
+interface BreakdownItem {
+  label: string;
+  score: number;
+  description: string;
+}
+
+// Props expected by the component
+interface Props {
+  score: string; // Assuming string like "85", not number
+  breakdown: BreakdownItem[];
+}
+
+const MatchingScore: React.FC<Props> = ({ score, breakdown }) => {
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => setExpanded(!expanded);
@@ -9,6 +22,7 @@ function MatchingScore({ score, breakdown }) {
   return (
     <div className="score-card">
       <h2>Matching Score</h2>
+
       <div className="score-circle">
         <span>{score}%</span>
       </div>
@@ -36,6 +50,6 @@ function MatchingScore({ score, breakdown }) {
       )}
     </div>
   );
-}
+};
 
 export default MatchingScore;

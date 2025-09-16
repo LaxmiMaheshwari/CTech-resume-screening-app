@@ -1,6 +1,6 @@
 // import { FaHome, FaInfoCircle, FaPhone } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import './Sidebar.css';
+import './index.css';
 
 function Sidebar() {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
-import './Header.css';
+import './index.css';
 
-function Header() {
+const Header = () => {
   return (
     <header className="header">
       <h1>Resume Screening App</h1>

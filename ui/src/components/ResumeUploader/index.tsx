@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
+import type { ChangeEvent } from 'react';
 
-import './ResumeUploader.css';
+import './index.css';
 
+interface ResumeUploaderProps {
+  onSubmit: (resume: string, jd: string) => void;
+}
 
-function ResumeUploader({ onSubmit }) {
-    const [resumeFile, setResumeFile] = useState(null);
-  const [resumeText, setResumeText] = useState('');
-  const [jdFile, setJdFile] = useState(null);
-  const [jdText, setJdText] = useState('');
+const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onSubmit }) => {
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeText, setResumeText] = useState<string>('');
+  const [jdFile, setJdFile] = useState<File | null>(null);
+  const [jdText, setJdText] = useState<string>('');
 
-  const handleFileChange = (e, setterFile, setterText) => {
-    const file = e.target.files[0];
+  const handleFileChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    setterFile: React.Dispatch<React.SetStateAction<File | null>>,
+    setterText: React.Dispatch<React.SetStateAction<string>>
+  ) => {
+    const file = e.target.files?.[0];
     if (!file) return;
 
     if (file.type === 'application/pdf') {
@@ -18,8 +26,9 @@ function ResumeUploader({ onSubmit }) {
       setterText('');
     } else if (file.type === 'text/plain') {
       const reader = new FileReader();
-      reader.onload = (e) => {
-        setterText(e.target.result);
+      reader.onload = (event: ProgressEvent<FileReader>) => {
+        const text = event.target?.result as string;
+        setterText(text);
         setterFile(null);
       };
       reader.readAsText(file);
@@ -34,16 +43,8 @@ function ResumeUploader({ onSubmit }) {
       return;
     }
 
-    // Submit logic here
-    alert('Submitted!');
-    console.log('Resume File:', resumeFile);
-    console.log('Resume Text:', resumeText);
-    console.log('JD File:', jdFile);
-    console.log('JD Text:', jdText);
-
-
-    const resume = resumeText || `PDF: ${resumeFile.name}`;
-    const jd = jdText || `PDF: ${jdFile.name}`;
+    const resume = resumeText || `PDF: ${resumeFile?.name}`;
+    const jd = jdText || `PDF: ${jdFile?.name}`;
 
     onSubmit(resume, jd);
   };
@@ -53,8 +54,8 @@ function ResumeUploader({ onSubmit }) {
     setResumeText('');
     setJdFile(null);
     setJdText('');
-    document.getElementById('resume-input').value = '';
-    document.getElementById('jd-input').value = '';
+    (document.getElementById('resume-input') as HTMLInputElement).value = '';
+    (document.getElementById('jd-input') as HTMLInputElement).value = '';
   };
 
   return (
@@ -71,13 +72,6 @@ function ResumeUploader({ onSubmit }) {
           onChange={(e) => handleFileChange(e, setResumeFile, setResumeText)}
         />
         {resumeFile && <p className="file-name">📄 {resumeFile.name}</p>}
-        {/* {!resumeFile && (
-          <textarea
-            placeholder="Paste your resume text here..."
-            value={resumeText}
-            onChange={(e) => setResumeText(e.target.value)}
-          />
-        )} */}
       </div>
 
       {/* JD Input */}
@@ -90,13 +84,6 @@ function ResumeUploader({ onSubmit }) {
           onChange={(e) => handleFileChange(e, setJdFile, setJdText)}
         />
         {jdFile && <p className="file-name">📄 {jdFile.name}</p>}
-        {/* {!jdFile && (
-          <textarea
-            placeholder="Paste the job description here..."
-            value={jdText}
-            onChange={(e) => setJdText(e.target.value)}
-          />
-        )} */}
       </div>
 
       {/* Buttons */}
@@ -106,6 +93,6 @@ function ResumeUploader({ onSubmit }) {
       </div>
     </div>
   );
-}
+};
 
 export default ResumeUploader;
