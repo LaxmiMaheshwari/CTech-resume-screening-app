@@ -1,11 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { api } from "./api.ts";
-const store=configureStore({
-    reducer:{
-        [api.reducerPath]:api.reducer,       
-    },
-    middleware:(getDeafultMiddleWare)=>getDeafultMiddleWare().concat(api.middleware),
-})
+import { configureStore } from '@reduxjs/toolkit';
+import { apiSlice } from './api.ts';
+import matchReducer from './features/match/matchSlice';
 
-export type RootState=ReturnType<typeof store.getState>;
-export default store;
+
+export const store = configureStore({
+  reducer: {
+    [apiSlice.reducerPath]: apiSlice.reducer,
+     match: matchReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
+});
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

@@ -2,15 +2,24 @@
 import React, {useState} from "react";
 import { MatchScoreResponse } from "../../types/resume";
 import './index.css';
+import { useAppSelector } from '../../hooks';
+
 
 interface MatchScoreProps {
   result: MatchScoreResponse | null;
 }
 
-const MatchScore: React.FC<MatchScoreProps> = ({ result }) => {
-  if (!result) return null;
+const MatchScore = () => {
+    const matchData = useAppSelector((state) => state.match.data);
 
-  const { overall_match_percentage, breakdown, message } = result;
+  if (!matchData) {
+    return (
+    
+    <p className="score-card">No match data found. Please upload your resume first.</p>
+    )
+  }
+
+  const { overall_match_percentage, breakdown, message } = matchData;
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => setExpanded(!expanded);

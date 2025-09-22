@@ -4,22 +4,21 @@
 // components/ResumeUploader.tsx
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { MatchScoreResponse } from "../../types/resume";
-
 import './index.css';
+import { useUploadResumeMutation } from '../../redux/api';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks';
+import { setMatchData } from '../../redux/features/match/matchSlice';
 
-interface ResumeUploaderProps {
-  onResult: (result: MatchScoreResponse) => void;
-}
-
-const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onResult }) => {
-  // const [resumeFile, setResumeFile] = useState<File | null>(null);
-  // const [jobDescription, setJobDescription] = useState<string>("");
+const ResumeUploader= () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();;
   const [loading, setLoading] = useState<boolean>(false);
-
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState<string>('');
   const [jdFile, setJdFile] = useState<File | null>(null);
   const [jdText, setJdText] = useState<string>('');
+  const [uploadResume, { isLoading }] = useUploadResumeMutation();
 
   const handleFileChange = (
     e: ChangeEvent<HTMLInputElement>,
@@ -28,101 +27,66 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onResult }) => {
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    if (file.type === 'application/pdf') {
-      setterFile(file);
-      setterText('');
-    } else if (file.type === 'text/plain') {
-      const reader = new FileReader();
-      reader.onload = (event: ProgressEvent<FileReader>) => {
-        const text = event.target?.result as string;
-        setterText(text);
-        setterFile(null);
-      };
-      reader.readAsText(file);
-    } else {
-      alert('Only PDF or TXT files are allowed.');
-    }
+    setterFile(file)
   };
 
 
-  // const handleResumeChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   setResumeFile(file || null);
-  // };
+  const readFileAsText = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
-  //  const handleJobDescChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   setResumeFile(file || null);
-  // };
+    reader.onload = () => {
+      resolve(reader.result as string);
+    };
+
+    reader.onerror = () => {
+      reject(reader.error);
+    };
+
+    reader.readAsText(file); // Read as plain text
+  });
+};
+
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!resumeFile || !jdText.trim()) {
+    if (!resumeFile || !jdFile) {
       alert("Please provide both resume and job description.");
       return;
     }
+    let jobdesc : any= null
+
+    if (jdFile.type === 'application/pdf') {
+        alert("Job desc should be text")
+        return 
+    } else if (jdFile.type === 'text/plain') {
+      const text = await readFileAsText(jdFile);
+      jobdesc = text
+      console.log("jobdesc", jobdesc)
+    } else {
+      alert('Only PDF or TXT files are allowed.');
+    }
 
     const formData = new FormData();
-
-     formData.append('resume_file', resumeFile);
-    formData.append('jd_text', jdText);
-
+    formData.append('resume_file', resumeFile);
+    formData.append('jd_text', jobdesc);
     try {
-      setLoading(true);
-      let apiUrl = `${import.meta.env.VITE_API_URL}screen_resume`;
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        body: formData,
-      });
+      setLoading(true)
+      const response: any = await uploadResume(formData).unwrap();
+            setLoading(false)
 
-      if (!response.ok) throw new Error("Failed to fetch result");
-
-      const data: MatchScoreResponse = await response.json();
-      onResult(data);
+      dispatch(setMatchData(response)); // Store the response
+      navigate('/match-score');
     } catch (error) {
-      console.error("Upload error:", error);
-      alert("Something went wrong while uploading.");
-    } finally {
-      setLoading(false);
+      console.error('Upload failed:', error);
     }
+
   };
 
   return (
-    // <form onSubmit={handleSubmit}>
-    //   <div>
-    //     <label>Upload Resume:</label>
-    //     <input type="file" accept=".pdf,.doc,.docx" onChange={handleResumeChange} />
-    //   </div>
-
-    //   <div>
-    //     <label>Job Description:</label>
-    //     <textarea
-    //       rows={6}
-    //       value={jobDescription}
-    //       onChange={(e) => setJobDescription(e.target.value)}
-    //     />
-    //   </div>
-
-    //   <button type="submit" disabled={loading}>
-    //     {loading ? "Processing..." : "Submit"}
-    //   </button>
-    // </form>
-
-
-
-
-
-
-
-
-
-
-
      <div className="uploader-container">
       <h2>Resume Matcher</h2>
-
       {/* Resume Input */}
       <form onSubmit={handleSubmit}>
       <div className="input-group">
@@ -138,7 +102,7 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onResult }) => {
 
       {/* JD Input */}
       <div className="input-group">
-        <label>Job Description (PDF/TXT):</label>
+        <label>Job Description (TXT):</label>
         <input
           id="jd-input"
           type="file"
@@ -154,7 +118,7 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onResult }) => {
         <button className="submit-btn" onClick={handleSubmit}>Submit</button>
       </div> */}
 
-         <button type="submit" disabled={loading}>
+         <button className="submit-btn" type="submit" disabled={loading}>
         {loading ? "Processing..." : "Submit"}
       </button>
       </form>
