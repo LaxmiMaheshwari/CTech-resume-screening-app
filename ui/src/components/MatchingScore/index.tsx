@@ -1,30 +1,26 @@
-import React, { useState } from 'react';
+// components/MatchScore.tsx
+import React, {useState} from "react";
+import { MatchScoreResponse } from "../../types/resume";
 import './index.css';
 
-// Define the shape of each item in the breakdown array
-interface BreakdownItem {
-  label: string;
-  score: number;
-  description: string;
+interface MatchScoreProps {
+  result: MatchScoreResponse | null;
 }
 
-// Props expected by the component
-interface Props {
-  score: string; // Assuming string like "85", not number
-  breakdown: BreakdownItem[];
-}
+const MatchScore: React.FC<MatchScoreProps> = ({ result }) => {
+  if (!result) return null;
 
-const MatchingScore: React.FC<Props> = ({ score, breakdown }) => {
+  const { overall_match_percentage, breakdown, message } = result;
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => setExpanded(!expanded);
 
   return (
-    <div className="score-card">
-      <h2>Matching Score</h2>
+  <div className="score-card">
+      <h2>Match Score</h2>
 
       <div className="score-circle">
-        <span>{score}%</span>
+        <span> {overall_match_percentage}%</span>
       </div>
 
       <button className="toggle-btn" onClick={toggleExpanded}>
@@ -34,22 +30,80 @@ const MatchingScore: React.FC<Props> = ({ score, breakdown }) => {
       {expanded && (
         <div className="details">
           <h3>Breakdown</h3>
-          {breakdown.map((item, idx) => (
-            <div className="detail-item" key={idx}>
+          {/* {breakdown.map((item, idx) => ( */}
+            <div className="detail-item">
               <div className="label">
-                {item.label}
-                <span className="value">{item.score}%</span>
+               Skills Score:  <span className="value">{breakdown.skills_score}%</span>
               </div>
               <div className="bar-container">
-                <div className="bar" style={{ width: `${item.score}%` }}></div>
+                <div className="bar" style={{ width: `${breakdown.skills_score}%` }}></div>
               </div>
-              <p className="extra">{item.description}</p>
+
+
+              
+              {/* <p className="extra">{item.description}</p> */}
             </div>
-          ))}
+
+            <div className="detail-item">
+              <div className="label">
+               Experience Score:  <span className="value">{breakdown.experience_score}%</span>
+              </div>
+              <div className="bar-container">
+                <div className="bar" style={{ width: `${breakdown.experience_score}%` }}></div>
+              </div>
+
+
+              
+              {/* <p className="extra">{item.description}</p> */}
+            </div>
+
+
+
+             <div className="detail-item">
+              <div className="label">
+               Education Score:  <span className="value">{breakdown.education_score}%</span>
+              </div>
+              <div className="bar-container">
+                <div className="bar" style={{ width: `${breakdown.education_score}%` }}></div>
+              </div>
+
+
+              
+              {/* <p className="extra">{item.description}</p> */}
+            </div>
+
+
+
+
+             <div className="detail-item">
+              <div className="label">
+               Semantic Score:  <span className="value">{breakdown.semantic_score}%</span>
+              </div>
+              <div className="bar-container">
+                <div className="bar" style={{ width: `${breakdown.semantic_score}%` }}></div>
+              </div>
+
+
+              
+              {/* <p className="extra">{breakdown.description}</p> */}
+               <p><em>{message}</em></p>
+            </div>
+
+
+          {/* ))} */}
         </div>
       )}
     </div>
+
+
+
   );
 };
 
-export default MatchingScore;
+export default MatchScore;
+
+
+
+
+
+

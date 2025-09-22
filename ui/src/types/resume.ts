@@ -13,3 +13,17 @@ export type ResumeResponseType = {
   relevantQuestions: Array<string> | [];
   regeneratedId: number;
 };
+
+
+export interface MatchBreakdown {
+  skills_score: number;
+  experience_score: number;
+  education_score: number;
+  semantic_score: number;
+}
+
+export interface MatchScoreResponse {
+  overall_match_percentage: number;
+  breakdown: MatchBreakdown;
+  message: string;
+}

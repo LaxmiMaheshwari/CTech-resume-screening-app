@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
-import type { ChangeEvent } from 'react';
+
+
+
+// components/ResumeUploader.tsx
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import { MatchScoreResponse } from "../../types/resume";
 
 import './index.css';
 
 interface ResumeUploaderProps {
-  onSubmit: (resume: string, jd: string) => void;
+  onResult: (result: MatchScoreResponse) => void;
 }
 
-const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onSubmit }) => {
+const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onResult }) => {
+  // const [resumeFile, setResumeFile] = useState<File | null>(null);
+  // const [jobDescription, setJobDescription] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [resumeText, setResumeText] = useState<string>('');
   const [jdFile, setJdFile] = useState<File | null>(null);
@@ -37,32 +45,86 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onSubmit }) => {
     }
   };
 
-  const handleSubmit = () => {
-    if ((!resumeFile && !resumeText) || (!jdFile && !jdText)) {
-      alert('Please provide both Resume and Job Description (via file or text).');
+
+  // const handleResumeChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   setResumeFile(file || null);
+  // };
+
+  //  const handleJobDescChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   setResumeFile(file || null);
+  // };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!resumeFile || !jdText.trim()) {
+      alert("Please provide both resume and job description.");
       return;
     }
 
-    const resume = resumeText || `PDF: ${resumeFile?.name}`;
-    const jd = jdText || `PDF: ${jdFile?.name}`;
+    const formData = new FormData();
 
-    onSubmit(resume, jd);
-  };
+     formData.append('resume_file', resumeFile);
+    formData.append('jd_text', jdText);
 
-  const handleCancel = () => {
-    setResumeFile(null);
-    setResumeText('');
-    setJdFile(null);
-    setJdText('');
-    (document.getElementById('resume-input') as HTMLInputElement).value = '';
-    (document.getElementById('jd-input') as HTMLInputElement).value = '';
+    try {
+      setLoading(true);
+      let apiUrl = `${import.meta.env.VITE_API_URL}screen_resume`;
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error("Failed to fetch result");
+
+      const data: MatchScoreResponse = await response.json();
+      onResult(data);
+    } catch (error) {
+      console.error("Upload error:", error);
+      alert("Something went wrong while uploading.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="uploader-container">
-      <h2>Upload Resume & Job Description...</h2>
+    // <form onSubmit={handleSubmit}>
+    //   <div>
+    //     <label>Upload Resume:</label>
+    //     <input type="file" accept=".pdf,.doc,.docx" onChange={handleResumeChange} />
+    //   </div>
+
+    //   <div>
+    //     <label>Job Description:</label>
+    //     <textarea
+    //       rows={6}
+    //       value={jobDescription}
+    //       onChange={(e) => setJobDescription(e.target.value)}
+    //     />
+    //   </div>
+
+    //   <button type="submit" disabled={loading}>
+    //     {loading ? "Processing..." : "Submit"}
+    //   </button>
+    // </form>
+
+
+
+
+
+
+
+
+
+
+
+     <div className="uploader-container">
+      <h2>Resume Matcher</h2>
 
       {/* Resume Input */}
+      <form onSubmit={handleSubmit}>
       <div className="input-group">
         <label>Resume (PDF/TXT):</label>
         <input
@@ -87,11 +149,18 @@ const ResumeUploader: React.FC<ResumeUploaderProps> = ({ onSubmit }) => {
       </div>
 
       {/* Buttons */}
-      <div className="button-group">
+      {/* <div className="button-group">
         <button className="cancel-btn" onClick={handleCancel}>Cancel</button>
         <button className="submit-btn" onClick={handleSubmit}>Submit</button>
-      </div>
+      </div> */}
+
+         <button type="submit" disabled={loading}>
+        {loading ? "Processing..." : "Submit"}
+      </button>
+      </form>
     </div>
+
+
   );
 };
 
