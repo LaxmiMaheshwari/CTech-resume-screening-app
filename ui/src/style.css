@@ -1,3 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root{
+	@apply font-poppins font-normal text-base ;
+
+}
+* {
+	@apply scroll-smooth;
+}
+@layer base{
+  body{
+    @apply font-poppins font-normal text-base ;
+  }
+}
+@layer utilities {
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	.no-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+}
+
+::-webkit-scrollbar{
+	@apply w-0 h-0;
+}
+::-webkit-scrollbar-thumb{
+	background: transparent;
+}
+/* #root {
+	@apply flex min-h-screen animate-fade-in;
+} */
+
+textarea:focus, input:focus{
+	box-shadow: none !important;
+}
+
+
+.sidebar-recentchat::-webkit-scrollbar{
+	width: 6px;
+	height: 6px;
+}
+.sidebar-recentchat::-webkit-scrollbar-thumb{
+	background-color: theme('colors.brand-200');
+	border-radius: 12px;
+}
+
+@layer components{
+	.heading-h1{
+	@apply text-2xl text-primary font-medium
+	}
+	.heading-h2{
+		@apply font-medium text-lg
+	}
+
+	.content-p{
+		@apply text-brand-text
+	}
+}
+
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

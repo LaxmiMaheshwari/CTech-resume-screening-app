@@ -2,6 +2,8 @@ import { useRef } from "react";
 import logo from "../../assets/images/logo.png";
 import lv_logo from "../../assets/images/lv_logo_img.png";
 import google from "../../assets/icons/google.svg";
+import resumeCheckerLogo from "../../assets/images/resume_checker_logo.svg";
+
 import background from "../../assets/video/background.mp4";
 // import useAuth from "../../hooks/useAuth";
 // import CircularSpinner from "../../components/CircularSpinner";
@@ -95,7 +97,7 @@ export default function Signin() {
           <div className="my-[67px] flex flex-col items-center justify-center">
             {/* Logo */}
             <img
-              src={logo}
+              src={resumeCheckerLogo}
               alt="LatentView Logo"
               className="object-contain"
               style={{
@@ -111,7 +113,7 @@ export default function Signin() {
               className="text-white text-center mt-3 font-poppins font-medium leading-[100%] tracking-[0%]"
               style={{ fontSize: "clamp(18px, 2.22vw, 100px)" }}
             >
-              GrowthOps <span className="text-sky-400">AI</span>
+              Resume Screening
             </h2>
 
             {/* Description */}
@@ -130,8 +132,8 @@ export default function Signin() {
                 className="font-manrope font-normal leading-relaxed"
                 style={{ fontSize: "clamp(8px, 0.833vw, 52px)" }}
               >
-                A GraphDB-powered chatbot for exploring and understanding
-                complex GrowthOps relationships and insights.
+                Automates resume filtering to quickly identify and shortlist the
+                best candidates
               </span>
             </div>
 
@@ -168,7 +170,7 @@ export default function Signin() {
 
         {/* style={{ top: `${taglineTop}px` }} */}
         {/* top-[calc(50%+250px)] */}
-        <div
+        {/* <div
           className=" fixed bottom-0 absolute -translate-y-1/2 flex flex-col items-center justify-center text-center
                         text-white bg-[#00000066] backdrop-blur-2xl opacity-100
                         rounded-[24px] p-[10px]"
@@ -184,7 +186,7 @@ export default function Signin() {
           >
             Powered by Pragya AI & GraphDB | Built by Team Nirvana
           </p>
-        </div>
+        </div> */}
       </div>
     </>
   );
