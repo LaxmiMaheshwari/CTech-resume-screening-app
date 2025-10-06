@@ -1,3 +1,5 @@
+import { useNavigate, useLocation } from "react-router-dom";
+
 import { useRef } from "react";
 import logo from "../../assets/images/logo.png";
 import lv_logo from "../../assets/images/lv_logo_img.png";
@@ -10,12 +12,17 @@ import background from "../../assets/video/background.mp4";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import GoogleLoginButton from "../../components/GoogleLoginButton";
+import { GoogleUser } from "../../types/login";
 
 export default function Signin() {
   // const { isLoading } = useAuth();
   // const { user } = useSelector((state: RootState) => state.loginUser);
   const videoRef = useRef(null);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const signin = () =>
     (window.location.href = `${import.meta.env.VITE_API_URL}auth/google`);
 
@@ -28,6 +35,10 @@ export default function Signin() {
   //     />
   //   );
   //  }
+
+  const handleLogin = (user: GoogleUser) => {
+    navigate(from, { replace: true });
+  };
 
   return (
     <>
@@ -138,7 +149,7 @@ export default function Signin() {
             </div>
 
             {/* Google Sign-in Button */}
-            <button
+            {/* <button
               onClick={() => signin()}
               className="flex items-center justify-center bg-white rounded-md shadow hover:bg-gray-100 transition py-2 "
               style={{
@@ -164,7 +175,37 @@ export default function Signin() {
               >
                 Sign in with Google
               </span>
-            </button>
+            </button> */}
+
+            <GoogleLoginButton onLogin={handleLogin}>
+              <button
+                // onClick={() => signin()}
+                className="flex items-center justify-center bg-white rounded-md shadow hover:bg-gray-100 transition py-2 "
+                style={{
+                  width: "clamp(177px, 20.05vw, 1500px)",
+                  marginTop: "clamp(10px, 2vw, 200px)",
+                  paddingTop: "clamp(8px, 0.56vw, 30px)",
+                  paddingBottom: "clamp(8px, 0.56vw, 30px)",
+                }}
+              >
+                <img
+                  src={google}
+                  alt="Google"
+                  className="
+                  mr-2"
+                  style={{
+                    width: "clamp(13px, 1.67vw, 100px)",
+                    height: "clamp(13px, 1.67vw, 100px)",
+                  }}
+                />
+                <span
+                  className="font-roboto font-medium text-black leading-[100%] tracking-[0%]"
+                  style={{ fontSize: "clamp(8px, 1.11vw, 52px)" }}
+                >
+                  Sign in with Google
+                </span>
+              </button>
+            </GoogleLoginButton>
           </div>
         </div>
 

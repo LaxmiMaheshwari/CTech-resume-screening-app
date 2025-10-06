@@ -34,9 +34,9 @@
 
 import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-//  import AuthGuard from "./components/AuthGuard";
+import AuthGuard from "./components/AuthGuard";
 import Signin from "./pages/Signin";
-// import Home from "./pages/Home";
+import Home from "./pages/Home";
 import { ConfigProvider } from "antd";
 import { useDispatch } from "react-redux";
 import Sidebar from "./components/Sidebar";
@@ -50,9 +50,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      // <AuthGuard>
-      <ResumeUploader />
-      // </AuthGuard>
+      <AuthGuard>
+        <Home />
+      </AuthGuard>
     ),
     children: [
       { element: <ResumeUploader />, index: true },
