@@ -1,13 +1,13 @@
-// components/ResumeUploader.tsx
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { MatchScoreResponse } from "../../types/resume";
-import "./index.css";
 import { useUploadResumeMutation } from "../../redux/api";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks";
 import { setMatchData } from "../../redux/features/match/matchSlice";
 
-const ResumeUploader = () => {
+const ResumeJobUpload: React.FC = () => {
+  const [jobDescFile, setJobDescFile] = useState<File | null>(null);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(false);
@@ -17,15 +17,32 @@ const ResumeUploader = () => {
   const [jdText, setJdText] = useState<string>("");
   const [uploadResume, { isLoading }] = useUploadResumeMutation();
 
-  const handleFileChange = (
-    e: ChangeEvent<HTMLInputElement>,
-    setterFile: React.Dispatch<React.SetStateAction<File | null>>,
-    setterText: React.Dispatch<React.SetStateAction<string>>
-  ) => {
+  const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-    setterFile(file);
+    if (file) setResumeFile(file);
   };
+
+  const handleJobDescChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) setJdFile(file);
+  };
+
+  const handleCancel = () => {
+    setResumeFile(null);
+    setJobDescFile(null);
+    setJdFile(null);
+  };
+
+  // const handleSubmit = () => {
+  //   if (!resumeFile || !jobDescFile) {
+  //     alert("Please upload both files.");
+  //     return;
+  //   }
+
+  //   // Upload logic goes here (API call, form data, etc.)
+  //   console.log("Submitting files:", { resumeFile, jobDescFile });
+  //   alert("Submitted successfully!");
+  // };
 
   const readFileAsText = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -81,45 +98,60 @@ const ResumeUploader = () => {
   };
 
   return (
-    <div className="uploader-container">
-      <h2>Resume Matcher</h2>
-      {/* Resume Input */}
-      <form onSubmit={handleSubmit}>
-        <div className="input-group">
-          <label>Resume (PDF/TXT):</label>
-          <input
-            id="resume-input"
-            type="file"
-            accept=".pdf,.txt"
-            onChange={(e) => handleFileChange(e, setResumeFile, setResumeText)}
-          />
-          {resumeFile && <p className="file-name">📄 {resumeFile.name}</p>}
-        </div>
+    <div className="max-w-xl mx-auto mt-12 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+      <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
+        Upload Resume & Job Description
+      </h2>
 
-        {/* JD Input */}
-        <div className="input-group">
-          <label>Job Description (TXT):</label>
-          <input
-            id="jd-input"
-            type="file"
-            accept=".pdf,.txt"
-            onChange={(e) => handleFileChange(e, setJdFile, setJdText)}
-          />
-          {jdFile && <p className="file-name">📄 {jdFile.name}</p>}
-        </div>
+      {/* Resume Upload */}
+      <div className="mb-5">
+        <label className="block text-gray-700 font-medium mb-2">
+          Resume (PDF, DOC, DOCX)
+        </label>
+        <input
+          type="file"
+          accept=".pdf,.doc,.docx"
+          onChange={handleResumeChange}
+          className="w-full p-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        />
+        {resumeFile && (
+          <p className="mt-2 text-sm text-green-600">{resumeFile.name}</p>
+        )}
+      </div>
 
-        {/* Buttons */}
-        {/* <div className="button-group">
-        <button className="cancel-btn" onClick={handleCancel}>Cancel</button>
-        <button className="submit-btn" onClick={handleSubmit}>Submit</button>
-      </div> */}
+      {/* Job Description Upload */}
+      <div className="mb-5">
+        <label className="block text-gray-700 font-medium mb-2">
+          Job Description (PDF, DOC, DOCX)
+        </label>
+        <input
+          type="file"
+          accept=".pdf,.doc,.docx"
+          onChange={handleJobDescChange}
+          className="w-full p-2 border border-gray-300 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100"
+        />
+        {jobDescFile && (
+          <p className="mt-2 text-sm text-green-600">{jobDescFile.name}</p>
+        )}
+      </div>
 
-        <button className="submit-btn" type="submit" disabled={loading}>
-          {loading ? "Processing..." : "Submit"}
+      {/* Action Buttons */}
+      <div className="flex justify-end space-x-4 mt-6">
+        <button
+          onClick={handleCancel}
+          className="px-4 py-2 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
+        >
+          Cancel
         </button>
-      </form>
+        <button
+          onClick={handleSubmit}
+          className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition"
+        >
+          Submit
+        </button>
+      </div>
     </div>
   );
 };
 
-export default ResumeUploader;
+export default ResumeJobUpload;

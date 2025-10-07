@@ -35,6 +35,8 @@
 import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AuthGuard from "./components/AuthGuard";
+import MatchScore from "./components/MatchingScore";
+
 import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 import { ConfigProvider } from "antd";
@@ -57,6 +59,7 @@ const router = createBrowserRouter([
     children: [
       { element: <ResumeUploader />, index: true },
       { path: "upload", element: <ResumeUploader /> },
+      { path: "match-score", element: <MatchScore /> },
 
       // { path: "competitiveIntelligencecenter", element: <ExecutiveSummary /> },
       // { path: "faqs", lazy: () => import("./pages/FAQs") },

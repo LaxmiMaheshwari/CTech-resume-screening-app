@@ -37,6 +37,7 @@ const GoogleLoginButton: React.FC<Props> = ({ onLogin, children }) => {
         client_id:
           "210575793102-m7u0gdgh66ecirgee36e01f6e0rfujqq.apps.googleusercontent.com",
         callback: handleCredentialResponse,
+        hosted_domain: "latentview.com", // UI hint only
       });
 
       window.google.accounts.id.renderButton(hiddenDivRef.current, {

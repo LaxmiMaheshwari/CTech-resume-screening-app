@@ -109,17 +109,30 @@ import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import lvLogo from "../../assets/images/logo.png";
+import appLogo from "../../assets/images/app_logo.png";
+
 import chatAI from "../../assets/icons/chatAI.svg";
 import knowledgeGraph from "../../assets/icons/knowledge_graph.svg";
 import documentsReports from "../../assets/icons/documents_reports.svg";
 import savedResponse from "../../assets/icons/saved_response.svg";
 import contextBuilder from "../../assets/icons/context_builder.svg";
 import { RootState } from "../../redux/store";
+import { Session } from "../../types/login";
+
+import { Navigate, useLocation } from "react-router-dom";
 
 export default function Sidebar() {
   const [active, setActive] = useState("AI Chat");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const sessionRaw = localStorage.getItem("session");
+  if (!sessionRaw) {
+    return <Navigate to="/signin" state={{ from: location }} replace />;
+  }
+  const session: Session = JSON.parse(sessionRaw);
+
+  console.log("userSession", session.user.picture);
+
   // const isRecentSidebarPinged = useSelector(
   //   (state: RootState) => state.sidebar.isRecentSidebarPinged
   // );
@@ -218,7 +231,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div>
         <img
-          src={lvLogo}
+          src={appLogo}
           alt="logo"
           style={{
             width: "clamp(36px, 2.5vw, 100px)",
@@ -232,29 +245,7 @@ export default function Sidebar() {
         style={{
           marginTop: " clamp(20px, 1.45vw, 52px)",
         }}
-      >
-        <button
-          className="p-[10px] rounded-full bg-[#3A70C9]  hover:bg-blue-600 "
-          style={{
-            padding: " clamp(10px, 0.833vw, 52px)",
-          }}
-        >
-          <svg
-            viewBox="0 0 20 21"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            style={{
-              width: "clamp(12px, 1.4vw, 52px)",
-              height: "clamp(10px, 1.4vw, 52vw)",
-            }}
-          >
-            <path
-              d="M2 20.9996C1.45 20.9996 0.979167 20.8038 0.5875 20.4121C0.195833 20.0204 0 19.5496 0 18.9996V4.99961C0 4.44961 0.195833 3.97878 0.5875 3.58711C0.979167 3.19544 1.45 2.99961 2 2.99961H8.525C8.85833 2.99961 9.10833 3.10378 9.275 3.31211C9.44167 3.52044 9.525 3.74961 9.525 3.99961C9.525 4.24961 9.4375 4.47878 9.2625 4.68711C9.0875 4.89544 8.83333 4.99961 8.5 4.99961H2V18.9996H16V12.4746C16 12.1413 16.1042 11.8913 16.3125 11.7246C16.5208 11.5579 16.75 11.4746 17 11.4746C17.25 11.4746 17.4792 11.5579 17.6875 11.7246C17.8958 11.8913 18 12.1413 18 12.4746V18.9996C18 19.5496 17.8042 20.0204 17.4125 20.4121C17.0208 20.8038 16.55 20.9996 16 20.9996H2ZM6 13.9996V11.5746C6 11.3079 6.05 11.0538 6.15 10.8121C6.25 10.5704 6.39167 10.3579 6.575 10.1746L15.175 1.57461C15.375 1.37461 15.6 1.22461 15.85 1.12461C16.1 1.02461 16.35 0.974609 16.6 0.974609C16.8667 0.974609 17.1208 1.02461 17.3625 1.12461C17.6042 1.22461 17.825 1.37461 18.025 1.57461L19.425 2.99961C19.6083 3.19961 19.75 3.42044 19.85 3.66211C19.95 3.90378 20 4.14961 20 4.39961C20 4.64961 19.9542 4.89544 19.8625 5.13711C19.7708 5.37878 19.625 5.59961 19.425 5.79961L10.825 14.3996C10.6417 14.5829 10.4292 14.7288 10.1875 14.8371C9.94583 14.9454 9.69167 14.9996 9.425 14.9996H7C6.71667 14.9996 6.47917 14.9038 6.2875 14.7121C6.09583 14.5204 6 14.2829 6 13.9996ZM8 12.9996H9.4L15.2 7.19961L14.5 6.49961L13.775 5.79961L8 11.5746V12.9996Z"
-              fill="white"
-            />
-          </svg>
-        </button>
-      </div>
+      ></div>
 
       {/* Menu Items */}
       <div className="flex flex-col w-full">
@@ -299,7 +290,7 @@ export default function Sidebar() {
       {/* Bottom Profile */}
       <div className="fixed bottom-[15px] flex justify-center z-50">
         <img
-          // src={user?.picture}
+          src={session.user.picture}
           alt="profile"
           style={{
             width: "clamp(20px, 2.7vw, 92px)",

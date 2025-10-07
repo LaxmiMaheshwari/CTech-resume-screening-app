@@ -5,6 +5,7 @@ import logo from "../../assets/images/logo.png";
 import lv_logo from "../../assets/images/lv_logo_img.png";
 import google from "../../assets/icons/google.svg";
 import resumeCheckerLogo from "../../assets/images/resume_checker_logo.svg";
+import appLogo from "../../assets/images/app_logo.png";
 
 import background from "../../assets/video/background.mp4";
 // import useAuth from "../../hooks/useAuth";
@@ -37,7 +38,8 @@ export default function Signin() {
   //  }
 
   const handleLogin = (user: GoogleUser) => {
-    navigate(from, { replace: true });
+    navigate("/");
+    // navigate(from, { replace: true });
   };
 
   return (
@@ -108,7 +110,7 @@ export default function Signin() {
           <div className="my-[67px] flex flex-col items-center justify-center">
             {/* Logo */}
             <img
-              src={resumeCheckerLogo}
+              src={appLogo}
               alt="LatentView Logo"
               className="object-contain"
               style={{
