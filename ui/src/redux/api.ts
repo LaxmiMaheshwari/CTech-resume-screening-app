@@ -15,10 +15,14 @@ export const apiSlice = createApi({
     getMatchScore: builder.query<MatchScoreResponse, void>({
       query: () => 'match-score',
     }),
+    getUser: builder.query({
+      query: () => `user`,
+    }),
   }),
 });
 
 export const {
   useUploadResumeMutation,
   useGetMatchScoreQuery,
+  useGetUserQuery
 } = apiSlice;

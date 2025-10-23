@@ -151,7 +151,7 @@ export default function Signin() {
             </div>
 
             {/* Google Sign-in Button */}
-            {/* <button
+            <button
               onClick={() => signin()}
               className="flex items-center justify-center bg-white rounded-md shadow hover:bg-gray-100 transition py-2 "
               style={{
@@ -177,11 +177,10 @@ export default function Signin() {
               >
                 Sign in with Google
               </span>
-            </button> */}
+            </button>
 
-            <GoogleLoginButton onLogin={handleLogin}>
+            {/* <GoogleLoginButton onLogin={handleLogin}>
               <button
-                // onClick={() => signin()}
                 className="flex items-center justify-center bg-white rounded-md shadow hover:bg-gray-100 transition py-2 "
                 style={{
                   width: "clamp(177px, 20.05vw, 1500px)",
@@ -207,7 +206,7 @@ export default function Signin() {
                   Sign in with Google
                 </span>
               </button>
-            </GoogleLoginButton>
+            </GoogleLoginButton> */}
           </div>
         </div>
 

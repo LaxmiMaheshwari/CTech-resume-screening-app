@@ -70,20 +70,20 @@ const ResumeJobUpload: React.FC = () => {
     let jobdesc: any = null;
 
     if (jdFile.type === "application/pdf") {
-      alert("Job desc should be text");
+      // alert("Job desc should be text");
       // return
     } else if (jdFile.type === "text/plain") {
       const text = await readFileAsText(jdFile);
       jobdesc = text;
       console.log("jobdesc", jobdesc);
     } else {
-      alert("Only PDF or TXT files are allowed.");
+      // alert("Only PDF or TXT files are allowed.");
     }
 
     const formData = new FormData();
     formData.append("resume_file", resumeFile);
     // formData.append("jd_text", jdFile);
-    formData.append("jd_text", jobdesc);
+    formData.append("jd_file", jdFile);
 
     try {
       setLoading(true);

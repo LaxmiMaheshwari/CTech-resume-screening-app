@@ -30,7 +30,7 @@ const SessionManager = () => {
       navigate("/signin");
     };
 
-    const interval = setInterval(checkSession, 60 * 1000); // every 1 min
+    const interval = setInterval(checkSession, 3600 * 1000); // every 1 min
     checkSession(); // check immediately
 
     return () => clearInterval(interval);
