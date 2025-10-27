@@ -37,6 +37,8 @@ import { Navigate } from "react-router-dom";
 const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isLoading, refetch } = useAuth();
   const { user } = useSelector((state: RootState) => state.loginUser);
+
+  console.log("user", user);
   const handleVisibilityChange = useCallback(() => {
     if (!document.hidden && user) {
       refetch();

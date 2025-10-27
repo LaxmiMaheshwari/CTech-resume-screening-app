@@ -11,7 +11,7 @@ const Home = () => {
 
   return (
     <>
-      <SessionManager></SessionManager>
+      {/* <SessionManager></SessionManager> */}
 
       <div className="flex h-screen overflow-hidden">
         {/* Sidebar */}

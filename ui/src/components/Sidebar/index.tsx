@@ -125,13 +125,15 @@ export default function Sidebar() {
   const [active, setActive] = useState("AI Chat");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const sessionRaw = localStorage.getItem("session");
-  if (!sessionRaw) {
-    return <Navigate to="/signin" state={{ from: location }} replace />;
-  }
-  const session: Session = JSON.parse(sessionRaw);
+  const { user } = useSelector((state: RootState) => state.loginUser);
 
-  console.log("userSession", session.user.picture);
+  // const sessionRaw = localStorage.getItem("session");
+  // if (!sessionRaw) {
+  //   return <Navigate to="/signin" state={{ from: location }} replace />;
+  // }
+  // const session: Session = JSON.parse(sessionRaw);
+
+  // console.log("userSession", session.user.picture);
 
   // const isRecentSidebarPinged = useSelector(
   //   (state: RootState) => state.sidebar.isRecentSidebarPinged
@@ -290,7 +292,7 @@ export default function Sidebar() {
       {/* Bottom Profile */}
       <div className="fixed bottom-[15px] flex justify-center z-50">
         <img
-          src={session.user.picture}
+          src={user?.picture}
           alt="profile"
           style={{
             width: "clamp(20px, 2.7vw, 92px)",
