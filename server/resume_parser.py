@@ -309,3 +309,73 @@ class ResumeParser:
                     education_requirements.append(match.strip())
         
         return list(set(education_requirements))
+
+
+    def extract_jd_bullets(self, text: str) -> List[str]:
+        """
+        Extract responsibility/requirement bullets from job description.
+        Used by improved matching engine for better semantic matching.
+        """
+        import re
+        
+        # Section detection patterns
+        section_hints = [
+            r"responsibilit(?:y|ies)",
+            r"what (you'?ll|you will) do",
+            r"role(?:s)?(?: &| and)? responsibilit(?:y|ies)?",
+            r"duties",
+            r"requirements",
+            r"what we(?:'| wi)re looking for",
+        ]
+        
+        # Find section
+        lo = text.lower()
+        section_start = len(text)
+        for pat in section_hints:
+            m = re.search(pat + r"\s*[:\-–—]?", lo)
+            if m:
+                section_start = m.end()
+                break
+        
+        section = text[section_start:]
+        
+        # Bullet point separator patterns
+        bullet_sep = re.compile(
+            r"(?:^|\n)\s*(?:[\u2022\u2023\u25E6\u2043\u2219\-–—\*]|\d{1,2}[.)]\s+)"
+        )
+        
+        parts = bullet_sep.split(section)
+        if len(parts) <= 1:
+            parts = [l for l in section.split("\n")]
+        
+        # Clean and filter bullets
+        def clean_line(line: str) -> str:
+            line = re.sub(r"^[\u2022\u2023\u25E6\u2043\u2219\-–—\*\d\)\. ]+\s*", "", line)
+            line = re.sub(r"\s+", " ", line).strip(" -–—•\t")
+            return line
+        
+        cand = [clean_line(p) for p in parts]
+        cand = [c for c in cand if c and 4 <= len(c.split()) <= 32]
+        
+        # Remove generic prefixes
+        generic_prefixes = (
+            "responsibilities",
+            "requirements",
+            "about the role",
+            "what you'll do",
+            "what you will do",
+            "duties",
+            "you will",
+        )
+        cand = [c for c in cand if not c.lower().startswith(generic_prefixes)]
+        
+        # Remove duplicates
+        seen = set()
+        out = []
+        for x in cand:
+            k = x.lower()
+            if k not in seen:
+                out.append(x)
+                seen.add(k)
+        
+        return out[:20]  # Return top 20 bullets
