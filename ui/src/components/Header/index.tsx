@@ -1,5 +1,4 @@
-import React from 'react';
-import './index.css';
+import "./index.css";
 
 const Header = () => {
   return (
@@ -7,6 +6,6 @@ const Header = () => {
       <h1>Resume Screening App</h1>
     </header>
   );
-}
+};
 
 export default Header;

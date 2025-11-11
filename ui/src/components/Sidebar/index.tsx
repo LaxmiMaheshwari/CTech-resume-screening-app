@@ -1,38 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { useDispatch, useSelector } from "react-redux";
-import lvLogo from "../../assets/images/logo.png";
-import appLogo from "../../assets/images/app_logo.png";
-
+import { useSelector } from "react-redux";
 import chatAI from "../../assets/icons/chatAI.svg";
-import knowledgeGraph from "../../assets/icons/knowledge_graph.svg";
-import documentsReports from "../../assets/icons/documents_reports.svg";
-import savedResponse from "../../assets/icons/saved_response.svg";
-import contextBuilder from "../../assets/icons/context_builder.svg";
 import { RootState } from "../../redux/store";
-import { Session } from "../../types/login";
-
-import { Navigate, useLocation } from "react-router-dom";
 import LogoutPopup from "../Logout";
 
 export default function Sidebar() {
   const [active, setActive] = useState("AI Chat");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.loginUser);
 
-  // const sessionRaw = localStorage.getItem("session");
-  // if (!sessionRaw) {
-  //   return <Navigate to="/signin" state={{ from: location }} replace />;
-  // }
-  // const session: Session = JSON.parse(sessionRaw);
-
-  // console.log("userSession", session.user.picture);
-
-  // const isRecentSidebarPinged = useSelector(
-  //   (state: RootState) => state.sidebar.isRecentSidebarPinged
-  // );
   const menuItems = [
     {
       name: "Home",
@@ -112,7 +89,6 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false);
 
   const changeRoute = (name: string, routeName: string) => {
-    // dispatch({ type: "sidebar/toggleRecentSidebar" });
     setActive(name);
     navigate(routeName);
   };
@@ -127,17 +103,6 @@ export default function Sidebar() {
     >
       {/* Logo */}
       <div>
-        {/* <img
-          src={appLogo}
-          alt="logo"
-          style={{
-            width: "clamp(36px, 2.5vw, 100px)",
-            height: "clamp(33px, 2.2vw, 80vw)",
-          }}
-
-          
-        /> */}
-
         <svg
           width="50"
           height="49"

@@ -1,5 +1,3 @@
-import React from "react";
-
 const CircularProgress = ({
   percentage = 75,
   size = 120,

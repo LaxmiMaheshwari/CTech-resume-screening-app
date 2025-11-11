@@ -1,5 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
-import { MatchScoreResponse } from "../../types/resume";
+import React, { useState } from "react";
 import { useUploadResumeMutation } from "../../redux/api";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks";
@@ -8,16 +7,16 @@ import { setMatchData } from "../../redux/features/match/matchSlice";
 import typingAnimation from "../../assets/images/typing_animation.gif";
 
 const ResumeJobUpload: React.FC = () => {
-  const [jobDescFile, setJobDescFile] = useState<File | null>(null);
+  // const [jobDescFile, setJobDescFile] = useState<File | null>(null);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
-  const [resumeText, setResumeText] = useState<string>("");
+  // const [resumeText, setResumeText] = useState<string>("");
   const [jdFile, setJdFile] = useState<File | null>(null);
-  const [jdText, setJdText] = useState<string>("");
-  const [uploadResume, { isLoading }] = useUploadResumeMutation();
+  // const [jdText, setJdText] = useState<string>("");
+  const [uploadResume] = useUploadResumeMutation();
 
   const handleResumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -31,7 +30,7 @@ const ResumeJobUpload: React.FC = () => {
 
   const handleCancel = () => {
     setResumeFile(null);
-    setJobDescFile(null);
+    // setJobDescFile(null);
     setJdFile(null);
   };
 

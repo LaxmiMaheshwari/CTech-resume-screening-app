@@ -1,13 +1,8 @@
 // components/MatchScore.tsx
-import React, { useState } from "react";
-import { MatchScoreResponse } from "../../types/resume";
+import { useState } from "react";
 import "./index.css";
 import { useAppSelector } from "../../hooks";
 import CircularProgress from "../CircularProgress";
-
-interface MatchScoreProps {
-  result: MatchScoreResponse | null;
-}
 
 const MatchScore = () => {
   const matchData = useAppSelector((state) => state.match.data);

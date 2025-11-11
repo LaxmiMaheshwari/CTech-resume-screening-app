@@ -1,48 +1,16 @@
-import { useNavigate, useLocation } from "react-router-dom";
-
 import { useRef } from "react";
-import logo from "../../assets/images/logo.png";
 import lv_logo from "../../assets/images/lv_logo_img.png";
 import google from "../../assets/icons/google.svg";
-import resumeCheckerLogo from "../../assets/images/resume_checker_logo.svg";
-import appLogo from "../../assets/images/app_logo.png";
-
 import background from "../../assets/video/background.mp4";
-// import useAuth from "../../hooks/useAuth";
-// import CircularSpinner from "../../components/CircularSpinner";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import GoogleLoginButton from "../../components/GoogleLoginButton";
-import { GoogleUser } from "../../types/login";
-import useAuth from "../../hooks/useAuth";
 
 export default function Signin() {
-  const { isLoading } = useAuth();
   const { user } = useSelector((state: RootState) => state.loginUser);
   const videoRef = useRef(null);
-
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
   const signin = () =>
     (window.location.href = `${import.meta.env.VITE_API_URL}auth/google`);
-
-  // if (isLoading) {
-  //   return (
-  //     <CircularSpinner
-  //       loader={isLoading}
-  //       backgroundColor="white"
-  //       border="#9061f9"
-  //     />
-  //   );
-  //  }
-
-  // const handleLogin = (user: GoogleUser) => {
-  //   navigate("/");
-  //   // navigate(from, { replace: true });
-  // };
-
   return (
     <>
       {user ? (
