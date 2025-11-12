@@ -1,0 +1,19 @@
+# Environment variables
+.venv
+.gcloudignore
+app.yaml  
+ctech-growthopscore-38faf97e42b6.json
+oldversions/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VS Code settings
+.vscode/
+
+.venv-dev/
+.env

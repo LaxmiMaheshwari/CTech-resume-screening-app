@@ -1,0 +1,35 @@
+runtime: nodejs20
+service: resume-screening-dev
+
+env_variables:
+  VITE_ENV: development
+  VITE_API_URL: "https://resume-screening-dev-dot-b2c-de.uc.r.appspot.com/"
+
+handlers:
+  - url: /(.*\..+)$
+    static_files: dist/\1
+    upload: dist/(.*\..+)$
+    secure: always
+    http_headers:
+      Cache-Control: public, max-age=31536000, immutable
+      Strict-Transport-Security: max-age=31536000; includeSubDomains
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: sameorigin
+      X-Permitted-Cross-Domain-Policies: master-only
+      # Content-Security-Policy: "default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src * 'self' data:; connect-src 'self' https://brand-nerve-center.latentview.com https://accounts.google.com https://*.databases.neo4j.io; font-src 'self' https://fonts.gstatic.com"
+      Referrer-Policy: strict-origin-when-cross-origin
+      secure: always
+
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html
+    secure: always
+    http_headers:
+      Cache-Control: no-store, no-cache, must-revalidate
+      Strict-Transport-Security: max-age=31536000; includeSubDomains
+      X-Content-Type-Options: nosniff
+      X-Frame-Options: sameorigin
+      X-Permitted-Cross-Domain-Policies: master-only
+      # Content-Security-Policy: "default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src * 'self' data:; connect-src 'self' https://brand-nerve-center.latentview.com https://accounts.google.com https://*.databases.neo4j.io; font-src 'self' https://fonts.gstatic.com"
+      Referrer-Policy: strict-origin-when-cross-origin
+      secure: always
