@@ -5,9 +5,14 @@ A FastAPI-based application that leverages AI and NLP to analyze resumes against
 ## Features
 
 - 📄 Multi-format support (PDF, DOCX, TXT)
-- 🔍 Advanced NLP-based analysis
+- 🔍 **Advanced Semantic Matching** using e5-base-v2 MIT-licensed embeddings
+- 🧠 **Responsibility Alignment** - Matches JD bullets to resume sentences
+- � **Multi-component Scoring**:
+  - Responsibility/Requirement Alignment (70 pts)
+  - Document-level Semantic Similarity (20 pts)
+  - Seniority/Level Alignment (10 pts)
+- � **Evidence-based Results** - Shows per-bullet matching with similarity scores
 - 🔐 Google OAuth authentication
-- 📊 Detailed match scoring
 - 🚀 High-performance API
 - 📱 CORS support for frontend integration
 
@@ -40,6 +45,8 @@ pip install -r requirements.txt
 ```bash
 python -m spacy download en_core_web_sm
 ```
+
+5. The embedding model (`intfloat/e5-base-v2`) will be automatically downloaded on first use (~400MB)
 
 ## Configuration
 
@@ -93,9 +100,59 @@ uvicorn main:app --host 0.0.0.0 --port 5000 --reload
     - `resume_file` (required): Resume file (PDF, DOCX, or TXT)
     - `jd_file` (required): Job description file (PDF, DOCX, or TXT)
 
-## API Response Format
+## Improved Scoring Model (v2.0)
 
-### Successful Response
+The application now uses **advanced semantic matching** with MIT-licensed embeddings:
+
+### Scoring Components
+
+1. **Responsibility Alignment (0–70 points)**
+   - Extracts key responsibilities/requirements from job description
+   - Matches each JD bullet against resume sentences using semantic similarity
+   - Provides evidence: best matching resume sentence for each requirement
+   - Uses `intfloat/e5-base-v2` embeddings for accurate semantic understanding
+
+2. **Document Similarity (0–20 points)**
+   - Compares whole-document semantic similarity between resume and JD
+   - Captures overall domain and role alignment
+
+3. **Seniority Alignment (0–10 points)**
+   - Infers experience level from both resume and job description
+   - Boosts points if leadership keywords detected (lead, managed, mentored, etc.)
+   - Rewards experience level matching
+
+### Embedding Model
+
+- **Model**: `intfloat/e5-base-v2` (MIT License)
+- **Size**: 768-dimensional embeddings
+- **Layers**: 12
+- **Features**: Free, no API keys required, runs locally
+- **Download**: ~400MB (cached after first use)
+- **Source**: [Hugging Face - intfloat/e5-base-v2](https://huggingface.co/intfloat/e5-base-v2)
+
+### Response Format (Improved)
+
+```json
+{
+    "overall_match_percentage": 75,
+    "breakdown": {
+        "skills_score": 80.0,
+        "experience_score": 70.0,
+        "education_score": 85.0,
+        "semantic_score": 75.0
+    },
+    "explanations": [
+        {
+            "jd_bullet": "Experience with Python and FastAPI development",
+            "resume_sentence": "Built high-performance APIs using Python and FastAPI",
+            "similarity": 0.89
+        }
+    ],
+    "message": "Good match! This candidate has several relevant qualifications."
+}
+```
+
+## API Response Format (Legacy)
 ```json
 {
     "overall_match_percentage": 75.5,
@@ -122,8 +179,10 @@ uvicorn main:app --host 0.0.0.0 --port 5000 --reload
 - **Framework**: FastAPI
 - **Authentication**: Google OAuth 2.0, JWT
 - **Document Processing**: PyMuPDF, python-docx
-- **NLP**: spaCy, scikit-learn
+- **NLP & Embeddings**: spaCy, sentence-transformers (e5-base-v2)
+- **Machine Learning**: scikit-learn
 - **File Handling**: python-magic, python-multipart
+- **Server**: Uvicorn
 
 ## Contributing
 
