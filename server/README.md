@@ -1,6 +1,6 @@
 # Resume Screening API
 
-A FastAPI-based application that leverages AI and NLP to analyze resumes against job descriptions, providing detailed match scores and insights for recruitment processes.
+A Flask-based application that leverages AI and NLP to analyze resumes against job descriptions, providing detailed match scores and insights for recruitment processes.
 
 ## Features
 
@@ -74,15 +74,15 @@ cp .env.example .env
 ```bash
 python main.py
 ```
-Or using uvicorn directly:
-```bash
-uvicorn main:app --host 0.0.0.0 --port 5000 --reload
-```
+
+The server will start on `http://localhost:5000`
 
 2. Access the application:
-   - API documentation: `http://localhost:5000/docs`
-   - Alternative API docs: `http://localhost:5000/redoc`
+   - API base URL: `http://localhost:5000`
    - Health check: `http://localhost:5000/health`
+   - API info: `http://localhost:5000/`
+
+**Note**: Flask doesn't provide automatic API documentation like FastAPI. For endpoint details, refer to the API Endpoints section below or review the `main.py` source code.
 
 ## API Endpoints
 
@@ -176,13 +176,13 @@ The application now uses **advanced semantic matching** with MIT-licensed embedd
 
 ## Technical Stack
 
-- **Framework**: FastAPI
-- **Authentication**: Google OAuth 2.0, JWT
+- **Framework**: Flask
+- **Authentication**: Google OAuth 2.0
 - **Document Processing**: PyMuPDF, python-docx
 - **NLP & Embeddings**: spaCy, sentence-transformers (e5-base-v2)
 - **Machine Learning**: scikit-learn
-- **File Handling**: python-magic, python-multipart
-- **Server**: Uvicorn
+- **CORS Support**: flask-cors
+- **Server**: Werkzeug (Flask development server)
 
 ## Contributing
 
@@ -198,7 +198,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Acknowledgments
 
-- FastAPI framework
+- Flask framework
 - spaCy NLP library
 - Google OAuth 2.0
 - All other open-source contributors
@@ -437,14 +437,11 @@ Use these ranges to provide meaningful feedback to users in your interface.
 
 ## 📚 Interactive API Documentation
 
-FastAPI automatically generates interactive documentation available at:
-`https://your-repl-url.replit.dev/docs`
-
-This provides a web interface where you can:
-- See all available endpoints
-- Test API calls directly
-- View request/response schemas
-- Download OpenAPI specifications
+Flask doesn't provide built-in interactive documentation like FastAPI. However, you can:
+- Use cURL commands (see examples in the "For cURL/Testing" section below)
+- Review the `main.py` file for endpoint definitions
+- Check the "API Endpoints" section below for request/response formats
+- Test endpoints directly using tools like Postman or Insomnia
 
 ## 🐛 Troubleshooting
 
