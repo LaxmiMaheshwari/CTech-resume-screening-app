@@ -1,0 +1,20 @@
+gcloud config configurations list
+gcloud config list
+gcloud projects list
+gcloud config configurations activate resume-screening/growthopscore
+
+
+b2c-de
+ctech-growthopscore
+
+
+
+gcloud config configurations create 
+
+gcloud config configurations create resume-screening
+gcloud config set project b2c-de
+gcloud config set account laxmi.malpani@latentview.com
+
+gcloud config configurations create growthopscore
+gcloud config set project ctech-growthopscore
+gcloud config set account laxmi.malpani@latentview.com
