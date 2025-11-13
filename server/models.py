@@ -1,6 +1,5 @@
 from typing import Optional, List, Dict, Any
 from pydantic import BaseModel
-from fastapi import UploadFile
 
 
 class ResumeData(BaseModel):
@@ -32,6 +31,7 @@ class ScreeningResponse(BaseModel):
     overall_match_percentage: float
     breakdown: MatchScoreBreakdown
     message: str
+    explanations: Optional[List[Dict]] = None
 
 
 class ScreeningRequest(BaseModel):

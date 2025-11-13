@@ -2,7 +2,6 @@ import re
 import io
 import spacy
 from typing import List, Optional
-from fastapi import UploadFile, HTTPException
 import fitz  # PyMuPDF
 from docx import Document
 from models import ResumeData, JobDescriptionData
@@ -13,6 +12,11 @@ try:
     HAS_MAGIC = True
 except ImportError:
     HAS_MAGIC = False
+
+
+class ParserException(Exception):
+    """Custom exception for parsing errors"""
+    pass
 
 
 class ResumeParser:
@@ -37,10 +41,14 @@ class ResumeParser:
                 import spacy
                 self.nlp = spacy.blank("en")
 
-    def parse_resume(self, file: UploadFile) -> ResumeData:
-        """Parse resume file and extract key information"""
+    def parse_resume(self, file) -> ResumeData:
+        """Parse resume file and extract key information
+        
+        Args:
+            file: File object with filename and file.read() method
+        """
         try:
-            content = file.file.read()
+            content = file.read()
             
             # Determine file type using magic if available, otherwise use extension
             if HAS_MAGIC and magic:
@@ -73,7 +81,7 @@ class ResumeParser:
                 text = content.decode('utf-8')
             else:
                 supported_types = "PDF (.pdf), Word Documents (.docx), or Text files (.txt)"
-                raise HTTPException(status_code=400, detail=f"Unsupported file type. Please upload {supported_types}")
+                raise ParserException(f"Unsupported file type. Please upload {supported_types}")
             
             cleaned_text = self._preprocess_text(text)
             
@@ -87,15 +95,16 @@ class ResumeParser:
                 education=education,
                 full_text=cleaned_text
             )
+        except ParserException:
+            raise
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error parsing resume: {str(e)}")
+            raise ParserException(f"Error parsing resume: {str(e)}")
 
-    def parse_job_description(self, file: UploadFile) -> JobDescriptionData:
-        """Parse job description from file or text"""
+    def parse_job_description(self, file) -> JobDescriptionData:
+        """Parse job description from file"""
         try:
             if file:
-                # jd_text = text
-                content = file.file.read()
+                content = file.read()
             # elif file:
             #     content = file.file.read()
                 
@@ -129,9 +138,9 @@ class ResumeParser:
                     jd_text = content.decode('utf-8')
                 else:
                     supported_types = "PDF (.pdf), Word Documents (.docx), or Text files (.txt)"
-                    raise HTTPException(status_code=400, detail=f"Unsupported file type. Please upload {supported_types}")
+                    raise ParserException(f"Unsupported file type. Please upload {supported_types}")
             else:
-                raise HTTPException(status_code=400, detail="Either file or text must be provided")
+                raise ParserException("Either file or text must be provided")
             
             cleaned_text = self._preprocess_text(jd_text)
             
@@ -145,8 +154,10 @@ class ResumeParser:
                 education_requirements=education_requirements,
                 full_text=cleaned_text
             )
+        except ParserException:
+            raise
         except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Error parsing job description: {str(e)}")
+            raise ParserException(f"Error parsing job description: {str(e)}")
 
     def _extract_text_from_pdf(self, content: bytes) -> str:
         """Extract text from PDF file"""
