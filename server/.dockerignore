@@ -1,0 +1,24 @@
+# Ignore git and project metadata
+.git
+.gitignore
+README.md
+*.md
+
+# Ignore local environments (CRITICAL for size)
+.venv
+venv/
+env/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Ignore local secrets
+.env
+*.json
+*.pem
+
+# Ignore cached models if you have them locally
+# (We will download them freshly inside the Docker build instead)
+models/
+cache/
