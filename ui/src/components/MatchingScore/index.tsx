@@ -15,7 +15,11 @@ const MatchScore = () => {
     );
   }
 
-  const { overall_match_percentage, breakdown, message } = matchData;
+  console.log("matchData", matchData);
+
+  // const { overall_match_percentage, breakdown, message } = matchData;
+  const { overall_match, breakdown, message } = matchData;
+
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpanded = () => setExpanded(!expanded);
@@ -36,7 +40,7 @@ const MatchScore = () => {
         <span> {overall_match_percentage}%</span>
       </div> */}
 
-      <CircularProgress percentage={overall_match_percentage} size={120} />
+      <CircularProgress percentage={overall_match} size={120} />
 
       <button
         // className="toggle-btn mt-2"
@@ -52,13 +56,13 @@ const MatchScore = () => {
           {/* {breakdown.map((item, idx) => ( */}
           <div className="detail-item">
             <div className="label text-white">
-              Skills Score:{" "}
-              <span className="value">{breakdown.skills_score}%</span>
+              Experience Score:{" "}
+              <span className="value">{breakdown.experience}%</span>
             </div>
             <div className="bar-container">
               <div
                 className="bar text-white"
-                style={{ width: `${breakdown.skills_score}%` }}
+                style={{ width: `${breakdown.experience}%` }}
               ></div>
             </div>
 
@@ -67,15 +71,15 @@ const MatchScore = () => {
 
           <div className="detail-item">
             <div className="label text-white">
-              Experience Score:{" "}
+              Technical Skills Score:{" "}
               <span className="value text-white">
-                {breakdown.experience_score}%
+                {breakdown.technical_skills}%
               </span>
             </div>
             <div className="bar-container">
               <div
                 className="bar text-white"
-                style={{ width: `${breakdown.experience_score}%` }}
+                style={{ width: `${breakdown.technical_skills}%` }}
               ></div>
             </div>
 
@@ -85,14 +89,12 @@ const MatchScore = () => {
           <div className="detail-item">
             <div className="label text-white">
               Education Score:{" "}
-              <span className="value text-white">
-                {breakdown.education_score}%
-              </span>
+              <span className="value text-white">{breakdown.education}%</span>
             </div>
             <div className="bar-container">
               <div
                 className="bar text-white"
-                style={{ width: `${breakdown.education_score}%` }}
+                style={{ width: `${breakdown.education}%` }}
               ></div>
             </div>
 
@@ -101,15 +103,13 @@ const MatchScore = () => {
 
           <div className="detail-item">
             <div className="label text-white">
-              Semantic Score:{" "}
-              <span className="value text-white">
-                {breakdown.semantic_score}%
-              </span>
+              Soft Skills Score:{" "}
+              <span className="value text-white">{breakdown.soft_skills}%</span>
             </div>
             <div className="bar-container">
               <div
                 className="bar text-white"
-                style={{ width: `${breakdown.semantic_score}%` }}
+                style={{ width: `${breakdown.soft_skills}%` }}
               ></div>
             </div>
 

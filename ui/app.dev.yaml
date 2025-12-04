@@ -3,7 +3,7 @@ service: resume-screening-dev
 
 env_variables:
   VITE_ENV: development
-  VITE_API_URL: "https://resume-screening-dev-dot-b2c-de.uc.r.appspot.com/"
+  VITE_API_URL: "https://resume-screening-api-dev-dot-b2c-de.uc.r.appspot.com/"
 
 handlers:
   - url: /(.*\..+)$

@@ -2,6 +2,7 @@ gcloud config configurations list
 gcloud config list
 gcloud projects list
 gcloud config configurations activate resume-screening/growthopscore
+gcloud config configurations activate growthopscore
 
 
 b2c-de

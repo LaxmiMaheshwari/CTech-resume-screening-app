@@ -41,7 +41,7 @@ const baseQueryWithRedirection: BaseQueryFn<
     api.dispatch(setUser(null));
     alert("Session Expired.Please sign in again");
     window.location.href =
-      "https://ctechbot-demo-dot-ctech-growthopscore.el.r.appspot.com/signin";
+      "https://resume-screening-dev-dot-b2c-de.uc.r.appspot.com/signin";
   }
   return queryResponse;
 };
