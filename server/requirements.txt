@@ -1,9 +1,19 @@
-flask==3.0.0
+Flask==3.0.0
+gunicorn==22.0.0
+flask
 flask-cors==4.0.0
-werkzeug==3.0.1
+flask-login
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-cloud-bigquery
+authlib
+google-cloud-aiplatform
+langchain
+langchain-google-vertexai
+langchain-community
 pymupdf==1.26.4
 python-docx==1.2.0
-spacy==3.8.7
 pydantic==2.11.9
 python-multipart==0.0.20
 scikit-learn==1.7.2
@@ -14,5 +24,9 @@ authlib
 httpx
 itsdangerous
 python-dotenv
-sentence-transformers==3.0.1
-torch>=2.0.0
+pandas==2.2.2
+vertexai
+flask_session
+PyPDF2
+# sentence-transformers==3.0.1
+# torch>=2.0.0
