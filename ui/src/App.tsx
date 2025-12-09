@@ -6,6 +6,7 @@ import Signin from "./pages/Signin";
 import Home from "./pages/Home";
 import { ConfigProvider } from "antd";
 import ResumeUploader from "./components/ResumeUploader";
+import About from "./pages/About";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,7 @@ const router = createBrowserRouter([
       { element: <ResumeUploader />, index: true },
       { path: "upload", element: <ResumeUploader /> },
       { path: "match-score", element: <MatchScore /> },
+      { path: "about", element: <About /> },
 
       // { path: "competitiveIntelligencecenter", element: <ExecutiveSummary /> },
       // { path: "faqs", lazy: () => import("./pages/FAQs") },
