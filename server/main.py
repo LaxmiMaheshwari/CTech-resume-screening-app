@@ -284,9 +284,7 @@ def callback():
             samesite='None'           
         )  
   
-        print("response")
         print(response)  
-        print("response end")
         print("Setting cookie:", response.headers.get("Set-Cookie"))
 
         return response
@@ -414,47 +412,51 @@ def score_section(resume_txt, jd_txt):
     emb_r = embed(resume_txt)
     emb_j = embed(jd_txt)
 
-    return round(cosine(emb_r, emb_j) * 100, 2)
+    return round(cosine(emb_r, emb_j) * 100)
 
 
 def calculate_breakdown(resume_text, jd_text):
-    print("9")
     resume = extract_sections(resume_text)
-    print("resume")
-    print(resume)
     jd = extract_sections(jd_text)
-    print("jd")
-    print(jd)
 
     breakdown = {
         "education": score_section(resume["education"], jd["education"]),
         "technical_skills": score_section(resume["technical_skills"], jd["technical_skills"]),
         "soft_skills": score_section(resume["soft_skills"], jd["soft_skills"]),
-        "experience": score_section(resume["experience"], jd["experience"]),
+        "analytics_experience": score_section(resume["analytics_experience"], jd["analytics_experience"]),
+        "data_science_experience": score_section(resume["data_science_experience"], jd["data_science_experience"]),
+        "data_engineering_experience": score_section(resume["data_engineering_experience"], jd["data_engineering_experience"]),
+
     }
-    print("1")
 
     # Weighted overall score
+    # weights = {
+    #     "education": 0.15,
+    #     "technical_skills": 0.5,
+    #     "soft_skills": 0.15,
+    #     "experience": 0.20
+
+    # }
+
     weights = {
-        "education": 0.15,
-        "technical_skills": 0.5,
-        "soft_skills": 0.15,
-        "experience": 0.20
+        "education": 0.08,
+        "technical_skills": 0.20,
+        "soft_skills": 0.02,
+        "analytics_experience": 0.25,
+        "data_science_experience": 0.25,
+        "data_engineering_experience": 0.20
     }
-    print("2")
-
-
     overall = sum(breakdown[key] * weights[key] for key in breakdown)
-
     # Skill gap
     resume_sk = set(extract_skills(resume_text))
+
     jd_sk = set(extract_skills(jd_text))
 
     missing = list(jd_sk - resume_sk)
     extra = list(resume_sk - jd_sk)
 
     return {
-        "overall_match": round(overall, 2),
+        "overall_match": round(overall),
         "breakdown": breakdown,
         "missing_skills": missing,
         "extra_skills": extra,
@@ -476,10 +478,6 @@ def cosine(a, b):
 
 def extract_sections_safe(response):
     text = response.strip()
-
-    print("hello 1")
-    print("text")
-    print(text)
     
     # Remove Markdown code fences if present
     if text.startswith("```"):
@@ -494,12 +492,7 @@ def extract_sections_safe(response):
         text = "\n".join(lines).strip()
     
     try:
-        print("hello2")
-        print("text")
-        print(text)
         data = json.loads(text)
-        print("data")
-        print(data)
     except json.JSONDecodeError:
         # fallback: return raw text if parsing fails
         data = {"raw_text": text}
@@ -516,13 +509,14 @@ def extract_sections(text):
         "technical_skills": "...",
         "soft_skills": "...",
         "experience": "..."
+        "analytics_experience": "..."
+        "data_science_experience": "..."
+        "data_engineering_experience": "..."
     }}
     
     Text:
     {text}
     """
-
-    print("10")
     response = llm.invoke(prompt)
     return extract_sections_safe(response)
     
@@ -551,21 +545,17 @@ def extract_skills(text):
 def screen_resume():
     try:
         # Check if files are present
-        print("1")
         if 'resume_file' not in request.files:
             return jsonify({'error': 'resume_file is required'}), 400
         
         if 'jd_file' not in request.files:
             return jsonify({'error': 'jd_file is required'}), 400
         
-        print("2")
         
         resume_file = request.files['resume_file']
-        print("3")
 
         jd_file = request.files['jd_file']
 
-        print("31")
         
         # Check if files are empty
         if resume_file.filename == '' or jd_file.filename == '':
@@ -576,32 +566,18 @@ def screen_resume():
             return jsonify({
                 'error': 'Invalid file type. Allowed types: PDF, DOCX, TXT'
             }), 400
-        
-        print("4")
-
-        
-        # # Reset file pointers
-        # resume_file.seek(0)
-        # print("4")
-
-        # jd_file.seek(0)
-        #  print("4")
+    
 
         
         # Parse files
         try:
             # resume_data = resume_parser.parse_resume(resume_file)
             # jd_data = resume_parser.parse_job_description(jd_file)
-            print("5")
-
             resume_text = extract_text(resume_file)
-            print("6")
             jd_text = extract_text(jd_file)
-            print("7")
 
             if not resume_text or not jd_text:
                 return jsonify({"error": "Failed to extract text"}), 400
-            print("8")
 
             result = calculate_breakdown(resume_text, jd_text)
             return jsonify(result)

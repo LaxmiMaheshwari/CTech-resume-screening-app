@@ -24,6 +24,9 @@ export interface MatchBreakdown {
   experience: number;
   soft_skills: number;
   technical_skills: number;
+  analytics_experience: number;
+  data_science_experience: number;
+  data_engineering_experience: number;
 }
 
 export interface MatchScoreResponse {

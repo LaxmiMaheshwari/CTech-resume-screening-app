@@ -56,13 +56,47 @@ const MatchScore = () => {
           {/* {breakdown.map((item, idx) => ( */}
           <div className="detail-item">
             <div className="label text-white">
-              Experience Score:{" "}
-              <span className="value">{breakdown.experience}%</span>
+              Analytics Experience Score:{" "}
+              <span className="value">{breakdown.analytics_experience}%</span>
             </div>
             <div className="bar-container">
               <div
                 className="bar text-white"
-                style={{ width: `${breakdown.experience}%` }}
+                style={{ width: `${breakdown.analytics_experience}%` }}
+              ></div>
+            </div>
+
+            {/* <p className="extra">{item.description}</p> */}
+          </div>
+
+          <div className="detail-item">
+            <div className="label text-white">
+              Data Science Experience Score:{" "}
+              <span className="value">
+                {breakdown.data_science_experience}%
+              </span>
+            </div>
+            <div className="bar-container">
+              <div
+                className="bar text-white"
+                style={{ width: `${breakdown.data_science_experience}%` }}
+              ></div>
+            </div>
+
+            {/* <p className="extra">{item.description}</p> */}
+          </div>
+
+          <div className="detail-item">
+            <div className="label text-white">
+              Data Engineering Experience Score:{" "}
+              <span className="value">
+                {breakdown.data_engineering_experience}%
+              </span>
+            </div>
+            <div className="bar-container">
+              <div
+                className="bar text-white"
+                style={{ width: `${breakdown.data_engineering_experience}%` }}
               ></div>
             </div>
 
