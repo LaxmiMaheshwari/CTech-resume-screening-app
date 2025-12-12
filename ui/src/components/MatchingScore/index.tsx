@@ -27,14 +27,16 @@ const MatchScore = () => {
   return (
     <div
       // className="score-card "
-      className="mx-auto mt-12 p-6 bg-[#313233] shadow-lg rounded-lg text-white"
-      style={{
-        width: " clamp(10px, 40vw, 2000px)",
-        padding: " clamp(4px, 1.3vw, 500px)",
-        // height: " clamp(4px, 30vw, 5000px)",
-      }}
+      className=" w-[70%]   text-white"
+      style={
+        {
+          // width: " clamp(10px, 40vw, 2000px)",
+          // padding: " clamp(4px, 1.3vw, 500px)",
+          // height: " clamp(4px, 30vw, 5000px)",
+        }
+      }
     >
-      <h2 className="text-white mb-2">Match Score</h2>
+      {/* <h2 className="text-white mb-2">Match Score</h2> */}
 
       {/* <div className="score-circle">
         <span> {overall_match_percentage}%</span>

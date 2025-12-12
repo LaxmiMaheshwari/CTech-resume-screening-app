@@ -41,16 +41,16 @@ export default function About() {
   return (
     <div className="min-h-screen py-16 px-6 bg-[#0f172a]">
       {/* HEADER */}
-      <div className="max-w-4xl mx-auto text-center text-white">
-        <h1 className="text-2xl font-bold">About Our App</h1>
-        <p className="text-lg  mt-4">
+      <div className="max-w-3xl mx-auto text-center text-white">
+        <h1 className="text-[18px] font-bold">About Our App</h1>
+        <p className="text-[16px]  mt-4">
           This is an AI-powered application that automates resume screening by
           calculating a match percentage between candidate resumes and job
           descriptions, thereby improving recruitment efficiency and quality of
           hire.
         </p>
 
-        <p className="text-white mt-6">
+        <p className="text-white mt-6 text-[16px]">
           To know more about our application, please{" "}
           <a
             target="_blank"
@@ -68,7 +68,7 @@ export default function About() {
 
       {/* FAQ SECTION */}
       <div className="max-w-2xl mx-auto mt-20 text-white">
-        <h2 className="text-2xl font-bold  text-center text-white">
+        <h2 className="text-[18px] font-bold  text-center text-white">
           Frequently Asked Questions
         </h2>
 
@@ -80,16 +80,16 @@ export default function About() {
               onClick={() => toggleFAQ(i)}
             >
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-medium text-white">
+                <h3 className="text-[16px] font-medium text-white">
                   {faq.question}
                 </h3>
-                <span className="text-blue-600 text-2xl">
+                <span className="text-blue-600 text-[16px]">
                   {openIndex === i ? "-" : "+"}
                 </span>
               </div>
 
               {openIndex === i && (
-                <p className="text-white mt-3">{faq.answer}</p>
+                <p className="text-white mt-3 text-[16px]">{faq.answer}</p>
               )}
             </div>
           ))}
